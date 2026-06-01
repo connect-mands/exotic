@@ -4,14 +4,33 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:andaman": "cross-env NEXT_PUBLIC_DESTINATION=andaman next dev",
+    "dev:kerala": "cross-env NEXT_PUBLIC_DESTINATION=kerala next dev",
     "build": "next build",
+    "build:andaman": "cross-env NEXT_PUBLIC_DESTINATION=andaman next build",
+    "build:kerala": "cross-env NEXT_PUBLIC_DESTINATION=kerala next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
+    "@base-ui/react": "^1.5.0",
+    "@hookform/resolvers": "^5.4.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cross-env": "^10.1.0",
+    "framer-motion": "^12.40.0",
+    "lucide-react": "^1.17.0",
     "next": "16.2.6",
+    "next-themes": "^0.4.6",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "react-hook-form": "^7.77.0",
+    "resend": "^6.12.4",
+    "shadcn": "^4.9.0",
+    "sonner": "^2.0.7",
+    "tailwind-merge": "^3.6.0",
+    "tw-animate-css": "^1.4.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

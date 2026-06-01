@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build"
+
+# Netlify auto-configures Next.js via OpenNext — no plugin pin required.
+
+[build.environment]
+  NODE_VERSION = "20"

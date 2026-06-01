@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Exotic Yatra — Multi-Destination Travel Landing Pages
 
-## Getting Started
+Production-ready Next.js 16 landing pages for lead generation, powered by a single configurable codebase.
 
-First, run the development server:
+**Domains**
+
+| Destination | Domain | Config |
+|-------------|--------|--------|
+| Andaman | bookandaman.in | `src/config/destinations/andaman.ts` |
+| Kerala | bookkeralapackage.in | `src/config/destinations/kerala.ts` |
+
+## Stack
+
+- Next.js 16 (App Router)
+- TypeScript
+- Tailwind CSS v4
+- shadcn/ui
+- React Hook Form + Zod
+- Framer Motion
+- Resend (enquiry emails)
+
+## Quick start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local
+npm run dev:andaman   # or dev:kerala
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Destination switching
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Production (recommended):** Deploy the same build to each domain. The active destination is resolved from the `Host` header (`bookandaman.in` → Andaman, `bookkeralapackage.in` → Kerala).
 
-## Learn More
+2. **Local / preview:** Set `NEXT_PUBLIC_DESTINATION=andaman` or `kerala` in `.env.local`.
 
-To learn more about Next.js, take a look at the following resources:
+3. **Separate builds:** `npm run build:andaman` / `npm run build:kerala`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Customising content
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Edit only the destination config files:
 
-## Deploy on Vercel
+- `src/config/destinations/andaman.ts`
+- `src/config/destinations/kerala.ts`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Shared contact details: `src/config/site.ts`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Each config controls hero copy, images, SEO, packages, highlights, benefits, and branding accents.
+
+## Enquiry form
+
+- Opens automatically ~1.2s after page load
+- Re-opens from “Plan Your Trip”, package “Get Quote”, and mobile sticky CTAs
+- POST `/api/enquiry` → Resend email to `ENQUIRY_EMAIL` (default: `query@exoticyatra.com`)
+
+Configure Resend in `.env.local` (see `.env.example`). In development without `RESEND_API_KEY`, submissions are logged to the console.
+
+## Deployment
+
+### Netlify
+
+See [docs/NETLIFY.md](docs/NETLIFY.md) for full steps.
+
+**Environment variables:**
+
+- `RESEND_API_KEY` — Resend API key
+- `ENQUIRY_EMAIL` — lead recipient inbox
+- `RESEND_FROM` — verified sender (required in production)
+- `NEXT_PUBLIC_SITE_URL` — optional canonical URL for SEO
+
+## Project structure
+
+```
+src/
+  app/              # Routes, API, metadata
+  components/       # UI, sections, forms, layout
+  config/           # Site + destination configs
+  context/          # Enquiry dialog state
+  lib/
+    email/          # Resend client, HTML template, send helper
+    request-host.ts # Host → domain / destination resolution
+    validation.ts
+    get-destination.ts
+  types/            # TypeScript types
+docs/
+  NETLIFY.md        # Netlify deployment guide
+```
+
+## License
+
+Private — Exotic Yatra.

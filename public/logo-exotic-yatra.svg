@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 145 61" width="145" height="61" role="img" aria-label="Exotic Yatra">
+  <text x="4" y="22" font-family="Arial, sans-serif" font-size="11" fill="#1e88c7" font-weight="bold">Exotic</text>
+  <text x="52" y="22" font-family="Arial, sans-serif" font-size="11" fill="#c62828" font-weight="bold">Yatra</text>
+  <path d="M8 28 Q20 8 32 28 Q20 24 8 28" fill="#2e7d32"/>
+  <path d="M28 18 L36 14 L34 22 Z" fill="#c62828"/>
+  <text x="4" y="48" font-family="Arial, sans-serif" font-size="8" fill="#666">Travel with trust</text>
+</svg>
