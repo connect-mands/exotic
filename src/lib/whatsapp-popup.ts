@@ -16,7 +16,7 @@ export function getWhatsAppLeadHref(destinationLabel: string): string {
   );
 }
 
-export function shouldHideLeadPopups(): boolean {
+export function shouldHideWhatsAppPopup(): boolean {
   try {
     const action = window.localStorage.getItem(WHATSAPP_POPUP_ACTION_KEY);
     const until = Number(window.localStorage.getItem(WHATSAPP_POPUP_UNTIL_KEY) ?? 0);

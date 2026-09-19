@@ -14,7 +14,7 @@ import { trackWhatsAppConversion } from "@/lib/analytics";
 import {
   getWhatsAppLeadHref,
   persistWhatsAppPopupClick,
-  shouldHideLeadPopups,
+  shouldHideWhatsAppPopup,
 } from "@/lib/whatsapp-popup";
 
 interface EnquiryDialogContextValue {
@@ -118,17 +118,17 @@ export function EnquiryDialogProvider({
   useEffect(() => {
     if (leadPromptConsumed.current) return;
 
-    const showWhatsAppPopup = () => {
+    const showLeadPopup = () => {
       if (leadPromptConsumed.current) return;
-      if (shouldHideLeadPopups()) {
-        leadPromptConsumed.current = true;
-        return;
-      }
       if (enquiryOpenRef.current) {
         leadPromptConsumed.current = true;
         return;
       }
       leadPromptConsumed.current = true;
+      if (shouldHideWhatsAppPopup()) {
+        setOpen(true);
+        return;
+      }
       setWhatsAppOpen(true);
     };
 
@@ -137,11 +137,11 @@ export function EnquiryDialogProvider({
         document.documentElement.scrollHeight - window.innerHeight;
       const ratio = maxScroll <= 0 ? 1 : window.scrollY / maxScroll;
       if (ratio >= SCROLL_TRIGGER_RATIO) {
-        showWhatsAppPopup();
+        showLeadPopup();
       }
     };
 
-    const timer = window.setTimeout(showWhatsAppPopup, WHATSAPP_POPUP_DELAY_MS);
+    const timer = window.setTimeout(showLeadPopup, WHATSAPP_POPUP_DELAY_MS);
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
