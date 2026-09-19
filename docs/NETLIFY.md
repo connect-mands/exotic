@@ -27,6 +27,12 @@ Set these in **Site configuration → Environment variables** (Production and De
 | `ENQUIRY_EMAIL` | Yes | Recipient for leads (e.g. `query@exoticyatra.com`) |
 | `RESEND_FROM` | Yes (production) | Verified sender, e.g. `Exotic Yatra <notifications@exoticyatra.com>` |
 | `NEXT_PUBLIC_SITE_URL` | Recommended | Canonical URL per site if you use separate Netlify sites |
+| `WHATSAPP_ACCESS_TOKEN` | Yes | Permanent Meta Cloud API access token |
+| `WHATSAPP_PHONE_NUMBER_ID` | Yes | WhatsApp sender phone number ID |
+| `WHATSAPP_BUSINESS_ACCOUNT_ID` | Yes | WhatsApp Business Account ID |
+| `WHATSAPP_TEMPLATE_NAME` | Yes | Approved OTP template name |
+| `WHATSAPP_TEMPLATE_LANGUAGE` | Recommended | Template language code (default `en_US`) |
+| `WHATSAPP_VERIFY_TOKEN` | Yes | Webhook verify token (`exoticyatra_otp_verify`) |
 
 Do **not** set `NEXT_PUBLIC_DESTINATION` in production when using domain-based routing on a single deploy.
 

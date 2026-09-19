@@ -64,11 +64,12 @@ export async function sendEnquiryEmail(
   };
   const { subject, html, text } = buildEnquiryEmailContent(context);
   const resend = getResendClient();
+  const customerEmail = data.email.trim();
 
   const { error } = await resend.emails.send({
     from: getFromAddress(),
     to: [getEnquiryRecipient()],
-    replyTo: data.email,
+    ...(customerEmail ? { replyTo: customerEmail } : {}),
     subject,
     html,
     text,

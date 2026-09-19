@@ -55,7 +55,7 @@ export function buildEnquiryEmailContent(
   const rows: { label: string; value: string }[] = [
     { label: "Customer Name", value: data.fullName },
     { label: "Phone Number", value: data.mobile },
-    { label: "Email Address", value: data.email },
+    { label: "Email Address", value: data.email.trim() ? data.email : "—" },
     { label: "Destination", value: destination.name },
     { label: "Travel Date", value: travelDate },
     { label: "Number of Adults", value: data.persons },
@@ -111,7 +111,7 @@ export function buildEnquiryEmailContent(
           </tr>
           <tr>
             <td style="padding:16px 28px 24px;font-size:12px;color:#6b7280;line-height:1.5;">
-              This enquiry was submitted via the Exotic Yatra website. Reply directly to the customer using their email address above.
+              This enquiry was submitted via the Exotic Yatra website. Contact the customer on WhatsApp using the phone number above.
             </td>
           </tr>
         </table>

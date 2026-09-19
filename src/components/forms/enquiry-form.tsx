@@ -8,7 +8,6 @@ import {
   Loader2,
   Mail,
   MapPin,
-  Phone,
   Shield,
   User,
   Users,
@@ -27,6 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FormIconField } from "@/components/ui/form-icon-field";
+import { WhatsAppOtpField } from "@/components/forms/whatsapp-otp-field";
 import {
   durationToShort,
   packageSelectPrimary,
@@ -67,6 +67,7 @@ export function EnquiryForm({
   const formId = formIdProp ?? (isHero ? "hero" : "modal");
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [whatsappVerified, setWhatsappVerified] = useState(false);
   const [activeSlug, setActiveSlug] = useState<DestinationSlug>(destination.slug);
 
   const packageDurations = uniquePackageDurations(destination.packages);
@@ -88,6 +89,7 @@ export function EnquiryForm({
     control,
     setValue,
     watch,
+    trigger,
     formState: { errors, isSubmitting },
   } = useForm<EnquiryFormValues>({
     resolver: zodResolver(enquirySchema),
@@ -104,6 +106,7 @@ export function EnquiryForm({
   });
 
   const watchedPackageId = watch("packageId");
+  const watchedMobile = watch("mobile");
 
   useEffect(() => {
     if (defaultPackageId) setValue("packageId", defaultPackageId);
@@ -130,6 +133,11 @@ export function EnquiryForm({
   }, [activeSlug, activeDestination.packages, setValue, isHero]);
 
   async function onSubmit(values: EnquiryFormValues) {
+    if (!whatsappVerified) {
+      setSubmitError("Please verify your WhatsApp number before submitting.");
+      return;
+    }
+
     setSubmitError(null);
     try {
       const res = await fetch("/api/enquiry", {
@@ -254,46 +262,46 @@ export function EnquiryForm({
             <Input
               id="email"
               type="email"
-              placeholder="Email Address"
+              placeholder="Email Address (optional)"
               className={heroInputClass}
               {...register("email")}
             />
           </FormIconField>
         </div>
 
+        <WhatsAppOtpField
+          variant="hero"
+          inputId={`${formId}-mobile`}
+          error={errors.mobile?.message}
+          phoneValue={watchedMobile}
+          phoneInput={register("mobile")}
+          triggerPhoneValidation={() => trigger("mobile")}
+          onVerifiedChange={setWhatsappVerified}
+        />
+
         <div className="grid grid-cols-2 gap-3">
-          <FormIconField icon={Phone} variant="hero" error={errors.mobile?.message}>
-            <Input
-              id="mobile"
-              type="tel"
-              placeholder="Mobile Number"
-              className={heroInputClass}
-              {...register("mobile")}
-            />
-          </FormIconField>
           <FormIconField icon={MapPin} variant="hero" error={errors.city?.message}>
             <Input
-              id="city"
+              id={`${formId}-city`}
               placeholder="Your City"
               className={heroInputClass}
               {...register("city")}
             />
           </FormIconField>
+          <FormIconField icon={Users} variant="hero" error={errors.persons?.message}>
+            <Input
+              id={`${formId}-persons`}
+              type="number"
+              inputMode="numeric"
+              min={1}
+              max={99}
+              placeholder="No. of Persons"
+              className={heroInputClass}
+              aria-invalid={!!errors.persons}
+              {...register("persons")}
+            />
+          </FormIconField>
         </div>
-
-        <FormIconField icon={Users} variant="hero" error={errors.persons?.message}>
-          <Input
-            id="persons"
-            type="number"
-            inputMode="numeric"
-            min={1}
-            max={99}
-            placeholder="No. of Persons"
-            className={heroInputClass}
-            aria-invalid={!!errors.persons}
-            {...register("persons")}
-          />
-        </FormIconField>
 
         <Controller
           name="packageId"
@@ -392,9 +400,15 @@ export function EnquiryForm({
           </p>
         )}
 
+        {!whatsappVerified && (
+          <p className="text-[11px] font-medium text-gray-500">
+            Verify your WhatsApp number to send this enquiry.
+          </p>
+        )}
+
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !whatsappVerified}
           className="quote-form-submit"
         >
           {isSubmitting ? (
@@ -428,7 +442,7 @@ export function EnquiryForm({
       </div>
 
       <div className="space-y-1">
-        <Label htmlFor="email-modal">Email Address</Label>
+        <Label htmlFor="email-modal">Email Address (optional)</Label>
         <Input
           id="email-modal"
           type="email"
@@ -440,21 +454,22 @@ export function EnquiryForm({
         )}
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        <div className="space-y-1">
-          <Label htmlFor="mobile-modal">Mobile Number</Label>
-          <Input id="mobile-modal" type="tel" className="h-10 bg-white" {...register("mobile")} />
-          {errors.mobile && (
-            <p className="text-xs text-red-600">{errors.mobile.message}</p>
-          )}
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="city-modal">Your City</Label>
-          <Input id="city-modal" className="h-10 bg-white" {...register("city")} />
-          {errors.city && (
-            <p className="text-xs text-red-600">{errors.city.message}</p>
-          )}
-        </div>
+      <WhatsAppOtpField
+        variant="default"
+        inputId={`${formId}-mobile`}
+        error={errors.mobile?.message}
+        phoneValue={watchedMobile}
+        phoneInput={register("mobile")}
+        triggerPhoneValidation={() => trigger("mobile")}
+        onVerifiedChange={setWhatsappVerified}
+      />
+
+      <div className="space-y-1">
+        <Label htmlFor={`${formId}-city`}>Your City</Label>
+        <Input id={`${formId}-city`} className="h-10 bg-white" {...register("city")} />
+        {errors.city && (
+          <p className="text-xs text-red-600">{errors.city.message}</p>
+        )}
       </div>
 
       <div className="space-y-1">
@@ -541,9 +556,15 @@ export function EnquiryForm({
         </p>
       )}
 
+      {!whatsappVerified && (
+        <p className="text-xs font-medium text-gray-500">
+          Verify your WhatsApp number to send this enquiry.
+        </p>
+      )}
+
       <Button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isSubmitting || !whatsappVerified}
         className="h-11 w-full rounded-full bg-[var(--brand-teal)] font-bold uppercase text-white hover:bg-[var(--brand-teal-dark)]"
       >
         {isSubmitting ? (

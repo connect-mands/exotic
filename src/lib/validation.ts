@@ -1,14 +1,28 @@
 import { z } from "zod";
 
+export function normalizeIndianMobile(value: string): string {
+  return value.replace(/\D/g, "").slice(-10);
+}
+
+export function isValidIndianMobile(value: string): boolean {
+  return /^[6-9]\d{9}$/.test(normalizeIndianMobile(value));
+}
+
 export const enquirySchema = z.object({
   fullName: z
     .string()
     .min(2, "Please enter your full name")
     .max(100, "Name is too long"),
-  email: z.string().email("Please enter a valid email address"),
+  email: z
+    .string()
+    .trim()
+    .refine(
+      (val) => val === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+      "Please enter a valid email address"
+    ),
   mobile: z
     .string()
-    .transform((val) => val.replace(/\D/g, "").slice(-10))
+    .transform(normalizeIndianMobile)
     .pipe(
       z
         .string()
