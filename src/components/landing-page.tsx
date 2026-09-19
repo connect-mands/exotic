@@ -1,4 +1,5 @@
 import { EnquiryDialog } from "@/components/forms/enquiry-dialog";
+import { WhatsAppLeadDialog } from "@/components/forms/whatsapp-lead-dialog";
 import { FloatingContact } from "@/components/layout/floating-contact";
 import { Footer } from "@/components/layout/footer";
 import { MobileStickyCTA } from "@/components/layout/mobile-sticky-cta";
@@ -19,7 +20,7 @@ interface LandingPageProps {
 
 export function LandingPage({ destination, siteUrl }: LandingPageProps) {
   return (
-    <EnquiryDialogProvider>
+    <EnquiryDialogProvider destinationLabel={destination.shortName}>
       <StructuredData destination={destination} url={siteUrl} />
       <div
         className={`bhutan-theme ${destination.branding.accentClass}`}
@@ -37,6 +38,7 @@ export function LandingPage({ destination, siteUrl }: LandingPageProps) {
         <VerticalQuoteTab />
         <MobileStickyCTA />
         <EnquiryDialog destination={destination} />
+        <WhatsAppLeadDialog destination={destination} />
       </div>
     </EnquiryDialogProvider>
   );

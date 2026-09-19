@@ -51,8 +51,10 @@ Each config controls hero copy, images, SEO, packages, highlights, benefits, and
 
 ## Enquiry form
 
-- Opens automatically ~1.2s after page load
-- Re-opens from “Plan Your Trip”, package “Get Quote”, and mobile sticky CTAs
+- After 2 seconds or 40% scroll, a WhatsApp lead popup appears first
+- “Maybe Later” or close (X) opens the existing enquiry form after 500ms
+- “Chat on WhatsApp” opens WhatsApp and hides both popups for 7 days
+- Enquiry form still opens immediately from “Plan Your Trip”, package “Get Quote”, and mobile sticky CTAs
 - POST `/api/enquiry` → Resend email to `ENQUIRY_EMAIL` (default: `query@exoticyatra.com`)
 - WhatsApp number verification is required before an enquiry can be sent
 - The form calls `POST /api/whatsapp/send-otp` and `POST /api/whatsapp/verify-otp`
