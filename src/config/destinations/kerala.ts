@@ -65,8 +65,8 @@ export const keralaConfig: DestinationConfig = {
     },
     formSubtitle: "Plan your perfect Kerala trip",
     image: {
-      src: "https://images.unsplash.com/photo-1602219225920-34e6893cddb7?w=1920&q=80",
-      alt: "Kerala backwaters houseboat",
+      src: "/assets/images/index/banner-kerala.png",
+      alt: "Kerala houseboat on still backwaters at sunrise",
     },
   },
   about: {
@@ -88,8 +88,7 @@ export const keralaConfig: DestinationConfig = {
       "alleppey houseboat package",
       "munnar tour package",
     ],
-    ogImage:
-      "https://images.unsplash.com/photo-1602219225920-34e6893cddb7?w=1200&q=80",
+    ogImage: "/assets/images/index/banner-kerala.png",
   },
   whyChooseUs: buildWhyChooseUs("Kerala Tour Packages"),
   whyBookOnline: [...whyBookOnlineItems],

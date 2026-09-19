@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { HeroQuoteCard } from "@/components/forms/hero-quote-card";
 import { HeroLeftContent } from "@/components/sections/hero-left-content";
 import type { DestinationConfig } from "@/types/destination";
@@ -11,13 +10,10 @@ export function HeroSection({ destination }: HeroSectionProps) {
   return (
     <section id="top" className="relative overflow-hidden">
       <div className="absolute inset-0 min-h-[600px] lg:min-h-[640px]">
-        <Image
+        <img
           src={destination.hero.image.src}
           alt={destination.hero.image.alt}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
+          className="absolute inset-0 size-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/45 to-black/20" />
       </div>

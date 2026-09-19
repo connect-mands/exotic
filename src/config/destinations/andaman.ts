@@ -56,8 +56,7 @@ export const andamanConfig: DestinationConfig = {
       "havelock island tour",
       "port blair tour package",
     ],
-    ogImage:
-      "https://images.unsplash.com/photo-1586864387967-d02ef85d93ad?w=1200&q=80",
+    ogImage: "/assets/images/index/banner.jpg",
   },
   whyChooseUs: buildWhyChooseUs("Andaman Tour Packages"),
   whyBookOnline: [...whyBookOnlineItems],
