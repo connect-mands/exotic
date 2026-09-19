@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    loader: "custom",
+    loaderFile: "./src/lib/image-loader.ts",
     remotePatterns: [
       {
         protocol: "https",
@@ -9,7 +11,6 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
     ],
-    formats: ["image/avif", "image/webp"],
   },
 };
 
