@@ -3,11 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
 
-export function SiteHeader() {
+interface SiteHeaderProps {
+  logoHref?: string;
+}
+
+export function SiteHeader({ logoHref = "#top" }: SiteHeaderProps) {
   return (
     <header className="relative z-30 h-[85px] border-b border-gray-200 bg-white shadow-sm">
       <div className="mx-auto flex h-full max-w-6xl items-center justify-between gap-4 px-4">
-        <Link href="#top" className="flex shrink-0 items-center">
+        <Link href={logoHref} className="flex shrink-0 items-center">
           <Image
             src={siteConfig.logo.src}
             alt={siteConfig.brandName}
