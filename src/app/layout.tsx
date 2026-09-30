@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { DM_Sans, Great_Vibes, Playfair_Display } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { GoogleAdsTag } from "@/components/seo/google-ads-tag";
 import { siteConfig } from "@/config/site";
+import { getDestinationConfig } from "@/lib/get-destination";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -31,11 +33,13 @@ export const metadata: Metadata = {
   description: "Premium travel packages across India",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const destination = await getDestinationConfig();
+
   return (
     <html
       lang="en"
@@ -43,6 +47,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full font-sans antialiased">
+        {destination.slug === "kerala" ? <GoogleAdsTag /> : null}
         {children}
         <Toaster richColors position="top-center" />
       </body>

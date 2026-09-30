@@ -104,6 +104,7 @@ See [docs/NETLIFY.md](docs/NETLIFY.md) for full steps.
 - `WHATSAPP_TEMPLATE_NAME` — approved OTP template name
 - `WHATSAPP_TEMPLATE_LANGUAGE` — template language code (default `en_US`)
 - `WHATSAPP_VERIFY_TOKEN` — webhook verify token (`exoticyatra_otp_verify`)
+- `NEXT_PUBLIC_GOOGLE_ADS_SEND_TO` — optional Google Ads conversion ID (Kerala tag is `AW-17728878047`)
 
 ## Project structure
 

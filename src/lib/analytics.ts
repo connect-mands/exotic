@@ -1,6 +1,8 @@
+export const GOOGLE_ADS_ID = "AW-17728878047";
+
 declare global {
   interface Window {
-    dataLayer?: Record<string, unknown>[];
+    dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
   }
 }
@@ -21,14 +23,6 @@ export function trackWhatsAppConversion(): void {
     method: "whatsapp",
   });
 
-  const sendTo = process.env.NEXT_PUBLIC_GOOGLE_ADS_SEND_TO;
-  if (sendTo) {
-    window.gtag("event", "conversion", { send_to: sendTo });
-    return;
-  }
-
-  window.gtag("event", "conversion", {
-    event_category: "whatsapp",
-    event_label: "popup_chat",
-  });
+  const sendTo = process.env.NEXT_PUBLIC_GOOGLE_ADS_SEND_TO ?? GOOGLE_ADS_ID;
+  window.gtag("event", "conversion", { send_to: sendTo });
 }

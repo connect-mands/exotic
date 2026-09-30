@@ -33,6 +33,7 @@ Set these in **Site configuration → Environment variables** (Production and De
 | `WHATSAPP_TEMPLATE_NAME` | Yes | Approved OTP template name |
 | `WHATSAPP_TEMPLATE_LANGUAGE` | Recommended | Template language code (default `en_US`) |
 | `WHATSAPP_VERIFY_TOKEN` | Yes | Webhook verify token (`exoticyatra_otp_verify`) |
+| `NEXT_PUBLIC_GOOGLE_ADS_SEND_TO` | Optional | Google Ads conversion send_to (default `AW-17728878047` on Kerala) |
 
 Do **not** set `NEXT_PUBLIC_DESTINATION` in production when using domain-based routing on a single deploy.
 
