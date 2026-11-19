@@ -1,6 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { sendEnquiryEmail } from "@/lib/email";
+import { recordEnquirySubmission } from "@/lib/enquiries/record-enquiry";
 import { getHostFromRequest, getSourceDomain } from "@/lib/request-host";
+import { recordEnquiryLead } from "@/lib/traffic/record-lead";
 import { enquirySchema } from "@/lib/validation";
 import { readVerifiedPhone } from "@/lib/whatsapp/otp-session";
 
@@ -24,11 +26,20 @@ export async function POST(request: NextRequest) {
 
     const submittedAt = new Date();
     const sourceDomain = getSourceDomain(getHostFromRequest(request));
+    const storedEnquiry = recordEnquirySubmission(parsed.data, sourceDomain, submittedAt);
 
-    await sendEnquiryEmail(parsed.data, {
-      submittedAt,
-      sourceDomain,
-    });
+    try {
+      await sendEnquiryEmail(parsed.data, {
+        submittedAt,
+        sourceDomain,
+      });
+    } catch (error) {
+      storedEnquiry.complete("failed");
+      throw error;
+    }
+
+    storedEnquiry.complete(process.env.RESEND_API_KEY ? "sent" : "not_configured");
+    recordEnquiryLead(request, sourceDomain);
 
     return NextResponse.json({
       message: "Enquiry sent successfully",

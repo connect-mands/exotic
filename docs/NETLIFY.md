@@ -34,8 +34,16 @@ Set these in **Site configuration → Environment variables** (Production and De
 | `WHATSAPP_TEMPLATE_LANGUAGE` | Recommended | Template language code (default `en_US`) |
 | `WHATSAPP_VERIFY_TOKEN` | Yes | Webhook verify token (`exoticyatra_otp_verify`) |
 | `NEXT_PUBLIC_GOOGLE_ADS_SEND_TO` | Optional | Google Ads conversion send_to (default `AW-17728878047` on Kerala) |
+| `DATABASE_URL` | Yes | Same Neon Postgres URL as bhutanpackages.in (pooled URL at runtime) |
+| `TRAFFIC_IP_HASH_SECRET` | Yes | Same secret as bhutanpackages.in, at least 32 characters. Visit tracking stays off without it |
+| `TRAFFIC_ADMIN_PASSWORD` | Yes | Same admin password as bhutanpackages.in (min 16 characters) |
+| `TRAFFIC_ADMIN_SESSION_SECRET` | Yes | Same session secret as bhutanpackages.in (min 32 characters) |
+| `TRAFFIC_STORE_RAW_IP` | For real IPs | Set `true` only together with the encryption key below |
+| `TRAFFIC_IP_ENCRYPTION_KEY` | For real IPs | Same 32-byte base64 key as bhutanpackages.in. Required to show stored IP addresses |
 
-Do **not** set `NEXT_PUBLIC_DESTINATION` in production when using domain-based routing on a single deploy.
+Copy `TRAFFIC_IP_HASH_SECRET`, `TRAFFIC_ADMIN_PASSWORD`, `TRAFFIC_ADMIN_SESSION_SECRET`, and `TRAFFIC_IP_ENCRYPTION_KEY` from the bhutanpackages.in Netlify site. A different hash secret makes Kerala and Andaman IP hashes not match Bhutan. A different encryption key cannot read IPs already stored in the shared database.
+
+Do **not** set `NEXT_PUBLIC_DESTINATION` in production when using domain-based routing on a single deploy. Do **not** set `NEXT_PUBLIC_SITE_URL` on the shared deploy, or both domains will advertise one canonical URL.
 
 ### Resend setup
 
@@ -74,5 +82,6 @@ npm run dev:andaman
 
 ## Limits
 
-- Enquiry handler only validates JSON and calls Resend — well under typical 10s serverless timeouts.
-- No database, uploads, or WebSockets — suitable for Netlify’s free tier aside from traffic/bandwidth limits on your plan.
+- Enquiry handler validates JSON, stores the lead, and calls Resend — well under typical 10s serverless timeouts.
+- Visit tracking writes to the shared Postgres database. Run `npm run db:migrate` once against the direct (non-pooler) Neon URL if the tables are not already present from bhutanpackages.in.
+- Dashboard: `/admin/traffic-monitor` on either domain. It shows Kerala, Andaman, and Bhutan rows from the shared database.
