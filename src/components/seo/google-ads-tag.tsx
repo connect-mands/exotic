@@ -1,21 +1,26 @@
-import Script from "next/script";
 import { GOOGLE_ADS_ID } from "@/lib/analytics";
 
+/**
+ * Official gtag snippet in the document head.
+ * Google's installer reads the initial HTML and misses tags injected after hydration.
+ */
 export function GoogleAdsTag() {
   return (
     <>
-      <Script
+      <script
+        async
         src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
-        strategy="afterInteractive"
       />
-      <Script id="google-ads-gtag" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${GOOGLE_ADS_ID}');
-        `}
-      </Script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GOOGLE_ADS_ID}');
+          `,
+        }}
+      />
     </>
   );
 }
